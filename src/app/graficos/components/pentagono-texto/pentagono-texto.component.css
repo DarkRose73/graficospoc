@@ -1,0 +1,15 @@
+.pentagono {
+  position: relative;
+  width: 140px;
+  height: 100px;
+  background-color: blue;
+  clip-path: polygon(75% 0, 100% 50%, 75% 100%, 0 100%, 0 0);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.contenido {
+  text-align: center;
+  color: white;
+}

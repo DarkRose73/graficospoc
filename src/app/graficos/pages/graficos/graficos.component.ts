@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-graficos',
+  selector: 'graficos-graficos',
   templateUrl: './graficos.component.html',
   styleUrls: ['./graficos.component.css'],
 })
