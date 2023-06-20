@@ -13,39 +13,45 @@ export class GraficoTerrorComponent {
   public barChartLegend = true;
   public barChartPlugins = [];
   private dataset: ChartDataset<'bar', number[]>[] = [
-    { data: [653, 250, 1000, 100, 56, 55, 40], label: 'ROJO', stack: 'A' },
-    { data: [282, 250, 250, 20, 86, 27, 90], label: 'AZUL', stack: 'A' },
+    { data: [0, -24, 9, 0, -13, -6, 0, -7], label: 'IE var', stack: 'A' },
+    {
+      data: [371, 372, 372, 372, 372, 375, 375, 375],
+      label: 'IE fijo',
+      stack: 'A',
+      pointStyle: 'circle',
+    },
+    {
+      data: [125, 129, 124, 122, 124, 122, 123, 124],
+      label: 'IVA',
+      stack: 'A',
+    },
+    {
+      data: [660, 679, 651, 640, 651, 643, 649, 655],
+      label: 'Costo ENAP',
+      stack: 'A',
+    },
   ];
 
-  public datasetNormalizado = this.graficosService.normalizarDataGraficoBarra(
-    this.dataset
-  );
-
   public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['', '', '', '', '', '', ''],
-    datasets: this.datasetNormalizado,
+    labels: [
+      '26-ene',
+      '2-feb',
+      '9-feb',
+      '16-feb',
+      '23-feb',
+      '2-mar',
+      '9-mar',
+      '16-mar',
+    ],
+    datasets: this.dataset,
   };
 
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Producto',
-        },
-      },
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Impuesto',
-        },
-        ticks: {
-          callback: (value) => {
-            return value + '%';
-          },
-        },
+    plugins: {
+      legend: {
+        align: 'center',
+        position: 'right',
       },
     },
   };
