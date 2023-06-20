@@ -1,4 +1,3 @@
-// TODO: MOVER A SERVICE
 const dataset = [
   { data: [653, 250, 1000, 100, 56, 55, 40], label: 'ROJO', stack: 'A' },
   { data: [282, 250, 250, 20, 86, 27, 90], label: 'AZUL', stack: 'A' },
