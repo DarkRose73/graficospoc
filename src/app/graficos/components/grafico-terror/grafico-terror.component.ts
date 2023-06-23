@@ -59,9 +59,11 @@ export class GraficoTerrorComponent {
     responsive: true,
     scales: {
       y: {
+        stacked: true,
         display: false,
       },
       x: {
+        stacked: true,
         display: true,
         grid: {
           display: false,
@@ -69,35 +71,51 @@ export class GraficoTerrorComponent {
       },
     },
     plugins: {
-      datalabels: {
-        anchor: 'center',
-        font: {
-          weight: 'bold',
-        },
-        // formatter: function (value, context) {
-        //   // Obtener los valores o etiquetas correspondientes
-        //   var dataset = context.dataset;
-        //   var index = context.dataIndex;
-        //   var values = dataset.data;
-
-        //   // Crear una cadena con las etiquetas separadas por una coma
-        //   var labels = ['Label 1', 'Label 2', 'Label 3']; // Ejemplo de etiquetas
-        //   var labelString = labels[index];
-
-        //   return labelString;
-        // },
-        // backgroundColor(context) {
-        //   switch (context.datasetIndex) {
-        //     case 0:
-        //       return '#ffc400';
-        //     default:
-        //       return '';
-        //   }
-        // },
-      },
       legend: {
         align: 'center',
         position: 'right',
+      },
+      datalabels: {
+        anchor(context) {
+          const datasetIndex = context.datasetIndex;
+          const allDatasets = context.chart.data.datasets;
+          if (datasetIndex === allDatasets.length - 1) {
+            return 'end';
+          } else {
+            return 'center';
+          }
+        },
+        align(context) {
+          const datasetIndex = context.datasetIndex;
+          const allDatasets = context.chart.data.datasets;
+          if (datasetIndex === allDatasets.length - 1) {
+            return 'bottom';
+          } else {
+            return 'center';
+          }
+        },
+        font: {
+          weight: 'bold',
+        },
+        formatter: function (value, context) {
+          const datasetIndex = context.datasetIndex;
+          const dataIndex = context.dataIndex;
+          const dataset = context.chart.data.datasets[datasetIndex];
+          const allDatasets = context.chart.data.datasets;
+          let total = 0;
+
+          allDatasets.forEach((dataset) => {
+            total += dataset.data[dataIndex] as number;
+          });
+
+          if (datasetIndex === allDatasets.length - 1) {
+            const label1 = dataset.data[dataIndex];
+            const label2 = `${total}`;
+            return `${label2}\n\n\n${label1}`;
+          } else {
+            return dataset.data[dataIndex];
+          }
+        },
       },
     },
   };
