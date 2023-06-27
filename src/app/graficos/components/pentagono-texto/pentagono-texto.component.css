@@ -1,7 +1,7 @@
 .pentagono {
   position: relative;
-  width: 140px;
-  height: 100px;
+  width: 7vw;
+  height: 10vh;
   background-color: #161072;
   clip-path: polygon(75% 0, 100% 50%, 75% 100%, 0 100%, 0 0);
   justify-content: center;

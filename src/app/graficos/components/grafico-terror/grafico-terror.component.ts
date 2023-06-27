@@ -13,9 +13,15 @@ export class GraficoTerrorComponent {
 
   public barChartLegend = true;
   public barChartPlugins = [DataLabelsPlugin];
-  // TODO: Definir colores de labels
+
+  private test = {
+    data: [0, -24, 9, 0, -13, -6, 0, -7],
+    label: 'IE var',
+  };
+
   private dataset: ChartDataset<'bar', number[]>[] = [
     {
+      // ...this.test,
       data: [0, -24, 9, 0, -13, -6, 0, -7],
       label: 'IE var',
       stack: 'A',
