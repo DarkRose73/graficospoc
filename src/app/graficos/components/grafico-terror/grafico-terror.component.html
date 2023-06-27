@@ -1,7 +1,9 @@
 <div class="chart">
+  <!-- [data]="barChartData" -->
   <canvas
     baseChart
-    [data]="barChartData"
+    [datasets]="datasetInput"
+    [labels]="barChartLabels"
     [options]="barChartOptions"
     [plugins]="barChartPlugins"
     [legend]="barChartLegend"

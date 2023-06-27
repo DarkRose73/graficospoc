@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChartDataset, ChartConfiguration } from 'chart.js';
 import { GraficosService } from '../../services/graficos-service.service';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
@@ -9,6 +9,8 @@ import DataLabelsPlugin from 'chartjs-plugin-datalabels';
   styleUrls: ['./grafico-terror.component.css'],
 })
 export class GraficoTerrorComponent {
+  @Input() datasetInput: ChartDataset<'bar', number[]>[] = [];
+
   constructor(private graficosService: GraficosService) {}
 
   public barChartLegend = true;
@@ -47,19 +49,57 @@ export class GraficoTerrorComponent {
     },
   ];
 
-  public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: [
-      '26-ene',
-      '2-feb',
-      '9-feb',
-      '16-feb',
-      '23-feb',
-      '2-mar',
-      '9-mar',
-      '16-mar',
-    ],
-    datasets: this.dataset,
-  };
+  private datasetDiesel: ChartDataset<'bar', number[]>[] = [
+    {
+      data: [58, 54, 118, 140, 145, 148, 106, 116],
+      label: 'IE var',
+      stack: 'A',
+      backgroundColor: '#ffbc01',
+    },
+    {
+      data: [93, 93, 93, 93, 93, 94, 94, 94],
+      label: 'IE fijo',
+      stack: 'A',
+      backgroundColor: '#a4a4a4',
+    },
+    {
+      data: [143, 144, 133, 125, 124, 124, 127, 126],
+      label: 'IVA',
+      stack: 'A',
+      backgroundColor: '#fbfbfb',
+    },
+    {
+      data: [753, 756, 702, 658, 654, 651, 669, 661],
+      label: 'Costo ENAP',
+      stack: 'A',
+      backgroundColor: '#cbcbcb',
+    },
+  ];
+
+  public barChartLabels = [
+    '26-ene',
+    '2-feb',
+    '9-feb',
+    '16-feb',
+    '23-feb',
+    '2-mar',
+    '9-mar',
+    '16-mar',
+  ];
+
+  // public barChartData: ChartConfiguration<'bar'>['data'] = {
+  //   labels: [
+  //     '26-ene',
+  //     '2-feb',
+  //     '9-feb',
+  //     '16-feb',
+  //     '23-feb',
+  //     '2-mar',
+  //     '9-mar',
+  //     '16-mar',
+  //   ],
+  //   datasets: this.datasetInput,
+  // };
 
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
