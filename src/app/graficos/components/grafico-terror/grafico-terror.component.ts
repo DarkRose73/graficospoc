@@ -76,46 +76,48 @@ export class GraficoTerrorComponent {
         position: 'right',
       },
       datalabels: {
-        anchor(context) {
-          const datasetIndex = context.datasetIndex;
-          const allDatasets = context.chart.data.datasets;
-          if (datasetIndex === allDatasets.length - 1) {
-            return 'end';
-          } else {
-            return 'center';
-          }
-        },
-        align(context) {
-          const datasetIndex = context.datasetIndex;
-          const allDatasets = context.chart.data.datasets;
-          if (datasetIndex === allDatasets.length - 1) {
-            return 'bottom';
-          } else {
-            return 'center';
-          }
-        },
+        anchor: 'center',
+        align: 'center',
+        // anchor(context) {
+        //   const datasetIndex = context.datasetIndex;
+        //   const allDatasets = context.chart.data.datasets;
+        //   if (datasetIndex === allDatasets.length - 1) {
+        //     return 'end';
+        //   } else {
+        //     return 'center';
+        //   }
+        // },
+        // align(context) {
+        //   const datasetIndex = context.datasetIndex;
+        //   const allDatasets = context.chart.data.datasets;
+        //   if (datasetIndex === allDatasets.length - 1) {
+        //     return 'bottom';
+        //   } else {
+        //     return 'center';
+        //   }
+        // },
         font: {
           weight: 'bold',
         },
-        formatter: function (value, context) {
-          const datasetIndex = context.datasetIndex;
-          const dataIndex = context.dataIndex;
-          const dataset = context.chart.data.datasets[datasetIndex];
-          const allDatasets = context.chart.data.datasets;
-          let total = 0;
+        // formatter: function (value, context) {
+        //   const datasetIndex = context.datasetIndex;
+        //   const dataIndex = context.dataIndex;
+        //   const dataset = context.chart.data.datasets[datasetIndex];
+        //   const allDatasets = context.chart.data.datasets;
+        //   let total = 0;
 
-          allDatasets.forEach((dataset) => {
-            total += dataset.data[dataIndex] as number;
-          });
+        //   allDatasets.forEach((dataset) => {
+        //     total += dataset.data[dataIndex] as number;
+        //   });
 
-          if (datasetIndex === allDatasets.length - 1) {
-            const label1 = dataset.data[dataIndex];
-            const label2 = `${total}`;
-            return `${label2}\n\n\n${label1}`;
-          } else {
-            return dataset.data[dataIndex];
-          }
-        },
+        //   if (datasetIndex === allDatasets.length - 1) {
+        //     const label1 = dataset.data[dataIndex];
+        //     const label2 = `${total}`;
+        //     return `${label2}\n\n\n${label1}`;
+        //   } else {
+        //     return dataset.data[dataIndex];
+        //   }
+        // },
       },
     },
   };
