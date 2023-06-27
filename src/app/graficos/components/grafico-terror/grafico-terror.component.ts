@@ -1,5 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ChartDataset, ChartConfiguration } from 'chart.js';
+import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
+import {
+  ChartDataset,
+  ChartConfiguration,
+  ChartType,
+  ChartOptions,
+} from 'chart.js';
 import { GraficosService } from '../../services/graficos-service.service';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
@@ -13,13 +18,18 @@ export class GraficoTerrorComponent implements OnInit {
 
   constructor(private graficosService: GraficosService) {}
 
-  public totales = [{}];
+  public totales: number[] = [];
+  public diferencias: number[] = [];
   public dataSets: ChartDataset<'bar', number[]>[] = [];
   public data: number[][] = [];
 
   ngOnInit(): void {
     this.obtenerMaximos();
-    console.log(this.totales);
+    this.datasetInput.push({
+      data: this.totales,
+      label: 'Total',
+      stack: 'B',
+    });
   }
 
   private obtenerMaximos() {
@@ -39,6 +49,17 @@ export class GraficoTerrorComponent implements OnInit {
     });
 
     this.totales = sumaPorPosicion;
+    console.log(this.totales);
+
+    const diferencias: number[] = [];
+
+    for (let i = 0; i < this.totales.length - 1; i++) {
+      const diferencia = this.totales[i] - this.totales[i + 1];
+      diferencias.push(diferencia);
+    }
+
+    this.diferencias = diferencias;
+    console.log(diferencias);
   }
 
   public barChartLegend = true;
@@ -195,4 +216,32 @@ export class GraficoTerrorComponent implements OnInit {
       },
     },
   };
+
+  public lineChartData: ChartDataset[] = [
+    {
+      data: this.totales,
+      label: 'Gráfico de líneas',
+      borderColor: 'red',
+      fill: false,
+    },
+  ];
+
+  public lineChartOptions: ChartOptions = {
+    responsive: true,
+  };
+
+  public lineChartLabels = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+  ];
+
+  public lineChartType: ChartType = 'line';
+  public lineChartLegend = true;
+  public lineChartPlugins = [];
 }

@@ -14,7 +14,7 @@
   <graficos-grafico1> </graficos-grafico1>
 </div>
 
-<div class="contenedorFilaGrafico" *ngIf="mostrarGraficoTerror">
+<div class="contenedorFilaGrafico" *ngIf="!mostrarGraficoTerror">
   <graficos-pentagono-texto texto="Gasolina 93"></graficos-pentagono-texto>
   <div class="contenedorGraficoTerror">
     <graficos-grafico-terror [datasetInput]="dataset">
