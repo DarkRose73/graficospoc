@@ -1,3 +1,19 @@
+<div
+  style="
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 20px;
+    background-color: red;
+  "
+>
+  <div *ngFor="let item of totales">- {{ item }} -</div>
+  <!-- <div *ngFor="let item of datasetInput; let i = index">
+    <div *ngFor="let datos of datasetInput[i].data">
+    </div>
+  </div> -->
+</div>
+
 <div class="chart">
   <!-- [data]="barChartData" -->
   <canvas

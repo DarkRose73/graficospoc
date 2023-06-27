@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChartDataset, ChartConfiguration } from 'chart.js';
 import { GraficosService } from '../../services/graficos-service.service';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
@@ -8,10 +8,38 @@ import DataLabelsPlugin from 'chartjs-plugin-datalabels';
   templateUrl: './grafico-terror.component.html',
   styleUrls: ['./grafico-terror.component.css'],
 })
-export class GraficoTerrorComponent {
+export class GraficoTerrorComponent implements OnInit {
   @Input() datasetInput: ChartDataset<'bar', number[]>[] = [];
 
   constructor(private graficosService: GraficosService) {}
+
+  public totales = [{}];
+  public dataSets: ChartDataset<'bar', number[]>[] = [];
+  public data: number[][] = [];
+
+  ngOnInit(): void {
+    this.obtenerMaximos();
+    console.log(this.totales);
+  }
+
+  private obtenerMaximos() {
+    this.datasetInput.forEach((e) => {
+      this.dataSets.push(e);
+    });
+
+    let sumaPorPosicion: number[] = [];
+
+    this.dataSets.forEach((element) => {
+      element.data.forEach((valor, index) => {
+        if (!sumaPorPosicion[index]) {
+          sumaPorPosicion[index] = 0;
+        }
+        sumaPorPosicion[index] += valor;
+      });
+    });
+
+    this.totales = sumaPorPosicion;
+  }
 
   public barChartLegend = true;
   public barChartPlugins = [DataLabelsPlugin];
