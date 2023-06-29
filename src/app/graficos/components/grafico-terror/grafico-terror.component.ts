@@ -1,10 +1,5 @@
-import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
-import {
-  ChartDataset,
-  ChartConfiguration,
-  ChartType,
-  ChartOptions,
-} from 'chart.js';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChartDataset, ChartConfiguration } from 'chart.js';
 import { GraficosService } from '../../services/graficos-service.service';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
@@ -13,15 +8,17 @@ import DataLabelsPlugin from 'chartjs-plugin-datalabels';
   templateUrl: './grafico-terror.component.html',
   styleUrls: ['./grafico-terror.component.css'],
 })
-export class GraficoTerrorComponent implements OnInit {
+export class GraficoTerrorComponent implements OnInit, OnDestroy {
   @Input() datasetInput: ChartDataset<'bar', number[]>[] = [];
 
   constructor(private graficosService: GraficosService) {}
 
+  ngOnDestroy(): void {
+    this.datasetInput.pop();
+  }
+
   public totales: number[] = [];
   public diferencias: number[] = [];
-  public dataSets: ChartDataset<'bar', number[]>[] = [];
-  public data: number[][] = [];
 
   ngOnInit(): void {
     this.obtenerMaximos();
@@ -33,13 +30,8 @@ export class GraficoTerrorComponent implements OnInit {
   }
 
   private obtenerMaximos() {
-    this.datasetInput.forEach((e) => {
-      this.dataSets.push(e);
-    });
-
-    let sumaPorPosicion: number[] = [];
-
-    this.dataSets.forEach((element) => {
+    const sumaPorPosicion: number[] = [];
+    this.datasetInput.forEach((element) => {
       element.data.forEach((valor, index) => {
         if (!sumaPorPosicion[index]) {
           sumaPorPosicion[index] = 0;
@@ -47,19 +39,14 @@ export class GraficoTerrorComponent implements OnInit {
         sumaPorPosicion[index] += valor;
       });
     });
-
     this.totales = sumaPorPosicion;
-    console.log(this.totales);
 
     const diferencias: number[] = [];
-
     for (let i = 0; i < this.totales.length - 1; i++) {
       const diferencia = this.totales[i] - this.totales[i + 1];
       diferencias.push(diferencia);
     }
-
     this.diferencias = diferencias;
-    console.log(diferencias);
   }
 
   public barChartLegend = true;
@@ -216,32 +203,4 @@ export class GraficoTerrorComponent implements OnInit {
       },
     },
   };
-
-  public lineChartData: ChartDataset[] = [
-    {
-      data: this.totales,
-      label: 'Gráfico de líneas',
-      borderColor: 'red',
-      fill: false,
-    },
-  ];
-
-  public lineChartOptions: ChartOptions = {
-    responsive: true,
-  };
-
-  public lineChartLabels = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-  ];
-
-  public lineChartType: ChartType = 'line';
-  public lineChartLegend = true;
-  public lineChartPlugins = [];
 }
