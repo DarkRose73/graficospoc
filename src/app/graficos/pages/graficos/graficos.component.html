@@ -11,13 +11,17 @@
 </button>
 
 <div style="height: 50vh; width: 50vw; margin: auto" *ngIf="mostrarGrafico1">
-  <graficos-grafico1> </graficos-grafico1>
+  <graficos-grafico1
+    [datasetInput]="datasetGrafico1"
+    [labelsInput]="labelsGrafico1"
+  >
+  </graficos-grafico1>
 </div>
 
 <div class="contenedorFilaGrafico" *ngIf="mostrarGraficoTerror">
   <graficos-pentagono-texto texto="Gasolina 93"></graficos-pentagono-texto>
   <div class="contenedorGraficoTerror">
-    <graficos-grafico-terror [datasetInput]="dataset">
+    <graficos-grafico-terror [datasetInput]="dataset" [labelsInput]="labels">
     </graficos-grafico-terror>
   </div>
   <!-- TODO: TODO ESTO SE PUEDE MOVER A UN COMPONENT; INCLUSO A SHARED -->
@@ -41,9 +45,13 @@
 <div class="contenedorFilaGrafico" *ngIf="mostrarGraficoTerror">
   <graficos-pentagono-texto texto="Di&eacute;sel"></graficos-pentagono-texto>
   <div class="contenedorGraficoTerror">
-    <graficos-grafico-terror [datasetInput]="datasetDiesel">
+    <graficos-grafico-terror
+      [datasetInput]="datasetDiesel"
+      [labelsInput]="labels"
+    >
     </graficos-grafico-terror>
   </div>
+  <!-- TODO: TODO ESTO SE PUEDE MOVER A UN COMPONENT; INCLUSO A SHARED -->
   <div style="display: flex; flex-direction: column; margin-left: 20px">
     <mat-form-field appearance="outline">
       <mat-select [(value)]="selectedDieselA">

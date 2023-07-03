@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartDataset } from 'chart.js';
 import { GraficosService } from '../../services/graficos-service.service';
 
@@ -7,25 +7,23 @@ import { GraficosService } from '../../services/graficos-service.service';
   templateUrl: './grafico1.component.html',
   styleUrls: ['./grafico1.component.css'],
 })
-export class Grafico1Component {
+export class Grafico1Component implements OnInit {
+  @Input() datasetInput: ChartDataset<'bar', number[]>[] = [];
+  @Input() labelsInput: string[] = [];
+
   constructor(private graficosService: GraficosService) {}
+
+  ngOnInit(): void {
+    // Normalizar data para que se muestre como bloques de porcentaje (0-100%)
+    this.datasetInput = this.graficosService.normalizarDataGraficoBarra(
+      this.datasetInput
+    );
+  }
+
+  // OPCIONES GRAFICO
 
   public barChartLegend = true;
   public barChartPlugins = [];
-  private dataset: ChartDataset<'bar', number[]>[] = [
-    { data: [653, 250, 1000, 100, 56, 55, 40], label: 'ROJO', stack: 'A' },
-    { data: [282, 250, 250, 20, 86, 27, 90], label: 'AZUL', stack: 'A' },
-  ];
-
-  public datasetNormalizado = this.graficosService.normalizarDataGraficoBarra(
-    this.dataset
-  );
-
-  public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['', '', '', '', '', '', ''],
-    datasets: this.datasetNormalizado,
-  };
-
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     scales: {

@@ -10,15 +10,16 @@ import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 })
 export class GraficoTerrorComponent implements OnInit, OnDestroy {
   @Input() datasetInput: ChartDataset<'bar', number[]>[] = [];
+  @Input() labelsInput: string[] = [];
 
   constructor(private graficosService: GraficosService) {}
 
   ngOnDestroy(): void {
+    // Eliminar el último registro (totales) para que no se vayan repitiendo
     this.datasetInput.pop();
   }
 
   public totales: number[] = [];
-  public diferencias: number[] = [];
 
   ngOnInit(): void {
     this.obtenerMaximos();
@@ -26,9 +27,41 @@ export class GraficoTerrorComponent implements OnInit, OnDestroy {
       data: this.totales,
       label: 'Total',
       stack: 'B',
+      // Funcion para cambiar dinámicamente los colores
+      backgroundColor(ctx, options) {
+        // color por defecto
+        let color = 'yellow';
+
+        // obtener variaciones
+        const diferencias: number[] = [0];
+        for (let i = 0; i < ctx.dataset.data.length - 1; i++) {
+          const diferencia = ctx.dataset.data[i + 1] - ctx.dataset.data[i];
+          diferencias.push(diferencia);
+        }
+
+        // Cambiar color del gráfico
+        for (let index = 0; index < diferencias.length; index++) {
+          if (index === ctx.dataIndex) {
+            // Variación disminuye
+            if (diferencias[index] < 0) {
+              return 'red';
+            }
+            // No hay variación
+            else if (diferencias[index] === 0) {
+              return 'cyan';
+            }
+            // Variación aumenta
+            else if (diferencias[index] > 0) {
+              return 'green';
+            }
+          }
+        }
+        return color;
+      },
     });
   }
 
+  // Función para obtener los totales de los gráficos
   private obtenerMaximos() {
     const sumaPorPosicion: number[] = [];
     this.datasetInput.forEach((element) => {
@@ -40,103 +73,12 @@ export class GraficoTerrorComponent implements OnInit, OnDestroy {
       });
     });
     this.totales = sumaPorPosicion;
-
-    const diferencias: number[] = [];
-    for (let i = 0; i < this.totales.length - 1; i++) {
-      const diferencia = this.totales[i] - this.totales[i + 1];
-      diferencias.push(diferencia);
-    }
-    this.diferencias = diferencias;
   }
 
+  // OPCIONES GRÁFICO
   public barChartLegend = true;
   public barChartPlugins = [DataLabelsPlugin];
-
-  private test = {
-    data: [0, -24, 9, 0, -13, -6, 0, -7],
-    label: 'IE var',
-  };
-
-  private dataset: ChartDataset<'bar', number[]>[] = [
-    {
-      // ...this.test,
-      data: [0, -24, 9, 0, -13, -6, 0, -7],
-      label: 'IE var',
-      stack: 'A',
-      backgroundColor: '#ffbc01',
-    },
-    {
-      data: [371, 372, 372, 372, 372, 375, 375, 375],
-      label: 'IE fijo',
-      stack: 'A',
-      backgroundColor: '#a4a4a4',
-    },
-    {
-      data: [125, 129, 124, 122, 124, 122, 123, 124],
-      label: 'IVA',
-      stack: 'A',
-      backgroundColor: '#fbfbfb',
-    },
-    {
-      data: [660, 679, 651, 640, 651, 643, 649, 655],
-      label: 'Costo ENAP',
-      stack: 'A',
-      backgroundColor: '#cbcbcb',
-    },
-  ];
-
-  private datasetDiesel: ChartDataset<'bar', number[]>[] = [
-    {
-      data: [58, 54, 118, 140, 145, 148, 106, 116],
-      label: 'IE var',
-      stack: 'A',
-      backgroundColor: '#ffbc01',
-    },
-    {
-      data: [93, 93, 93, 93, 93, 94, 94, 94],
-      label: 'IE fijo',
-      stack: 'A',
-      backgroundColor: '#a4a4a4',
-    },
-    {
-      data: [143, 144, 133, 125, 124, 124, 127, 126],
-      label: 'IVA',
-      stack: 'A',
-      backgroundColor: '#fbfbfb',
-    },
-    {
-      data: [753, 756, 702, 658, 654, 651, 669, 661],
-      label: 'Costo ENAP',
-      stack: 'A',
-      backgroundColor: '#cbcbcb',
-    },
-  ];
-
-  public barChartLabels = [
-    '26-ene',
-    '2-feb',
-    '9-feb',
-    '16-feb',
-    '23-feb',
-    '2-mar',
-    '9-mar',
-    '16-mar',
-  ];
-
-  // public barChartData: ChartConfiguration<'bar'>['data'] = {
-  //   labels: [
-  //     '26-ene',
-  //     '2-feb',
-  //     '9-feb',
-  //     '16-feb',
-  //     '23-feb',
-  //     '2-mar',
-  //     '9-mar',
-  //     '16-mar',
-  //   ],
-  //   datasets: this.datasetInput,
-  // };
-
+  // Dentro de las opciones se pueden configurar los plug-ins y más opciones del gráfico
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     scales: {
@@ -160,46 +102,9 @@ export class GraficoTerrorComponent implements OnInit, OnDestroy {
       datalabels: {
         anchor: 'center',
         align: 'center',
-        // anchor(context) {
-        //   const datasetIndex = context.datasetIndex;
-        //   const allDatasets = context.chart.data.datasets;
-        //   if (datasetIndex === allDatasets.length - 1) {
-        //     return 'end';
-        //   } else {
-        //     return 'center';
-        //   }
-        // },
-        // align(context) {
-        //   const datasetIndex = context.datasetIndex;
-        //   const allDatasets = context.chart.data.datasets;
-        //   if (datasetIndex === allDatasets.length - 1) {
-        //     return 'bottom';
-        //   } else {
-        //     return 'center';
-        //   }
-        // },
         font: {
           weight: 'bold',
         },
-        // formatter: function (value, context) {
-        //   const datasetIndex = context.datasetIndex;
-        //   const dataIndex = context.dataIndex;
-        //   const dataset = context.chart.data.datasets[datasetIndex];
-        //   const allDatasets = context.chart.data.datasets;
-        //   let total = 0;
-
-        //   allDatasets.forEach((dataset) => {
-        //     total += dataset.data[dataIndex] as number;
-        //   });
-
-        //   if (datasetIndex === allDatasets.length - 1) {
-        //     const label1 = dataset.data[dataIndex];
-        //     const label2 = `${total}`;
-        //     return `${label2}\n\n\n${label1}`;
-        //   } else {
-        //     return dataset.data[dataIndex];
-        //   }
-        // },
       },
     },
   };

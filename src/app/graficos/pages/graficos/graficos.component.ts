@@ -7,14 +7,13 @@ import { ChartDataset } from 'chart.js';
   styleUrls: ['./graficos.component.css'],
 })
 export class GraficosComponent {
+  // Opciones y funcionalidades para mostrar, no tomar en cuenta
   public mostrarGrafico1: boolean = false;
   public mostrarGraficoTerror: boolean = false;
   public selectedGasolina93A = 'producto';
   public selectedGasolina93B = 'planta';
-
   public selectedDieselA = 'producto';
   public selectedDieselB = 'planta';
-
   public cambiarGrafico(value: number) {
     if (value === 1) {
       this.mostrarGrafico1 = true;
@@ -26,6 +25,22 @@ export class GraficosComponent {
     }
   }
 
+  // DEFINICION DE DATASETS
+  // TODO: Traer desde un servicio
+  // Es importante enviarlos con estos valores y cambiar solamente la data
+  // Tambien la cantidad de elementos de data debe coincidir con la cantidad de labels del gráfico
+
+  // GRAFICO TERROR
+  public labels: string[] = [
+    '26-ene',
+    '2-feb',
+    '9-feb',
+    '16-feb',
+    '23-feb',
+    '2-mar',
+    '9-mar',
+    '16-mar',
+  ];
   public dataset: ChartDataset<'bar', number[]>[] = [
     {
       data: [0, -24, 9, 0, -13, -6, 0, -7],
@@ -52,7 +67,6 @@ export class GraficosComponent {
       backgroundColor: '#cbcbcb',
     },
   ];
-
   public datasetDiesel: ChartDataset<'bar', number[]>[] = [
     {
       data: [58, 54, 118, 140, 145, 148, 106, 116],
@@ -79,4 +93,11 @@ export class GraficosComponent {
       backgroundColor: '#cbcbcb',
     },
   ];
+
+  // GRAFICO 1
+  public datasetGrafico1: ChartDataset<'bar', number[]>[] = [
+    { data: [653, 250, 1000, 100, 56, 55, 40], label: 'ROJO', stack: 'A' },
+    { data: [282, 250, 250, 20, 86, 27, 90], label: 'AZUL', stack: 'A' },
+  ];
+  public labelsGrafico1: string[] = ['', '', '', '', '', '', ''];
 }
